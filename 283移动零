@@ -1,0 +1,65 @@
+/*法一：直接覆盖，后面再赋0.用了两个下标。不交换*/
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int indexNow = 0;//记录当前为0的数字的下标
+        int indexNum = 0;//现在容器移动到的下标
+        int m = nums.length;//容器长度
+
+        while(indexNum<m){
+            if(nums[indexNum] != 0) 
+         {//如果不是0，
+                nums[indexNow++] = nums[indexNum];
+            }
+            ++indexNum;
+        }
+
+        for(int i = indexNow; i < m; i++){
+            nums[i] = 0;
+        }
+    }
+}
+
+/*法二：一边往后遍历找0，一边交换；在0后面找到的第一个不为0的数字（下标i）和找到的0（下标k）进行交换。就能不破坏原来的数字顺序，同时把0一个个换到最后面*/
+class Solution {
+    public void moveZeroes(int[] nums) {
+
+        int k = 0;
+
+        for (int i = 0; i < nums.length; i++){
+
+            if (nums[i] == 0){
+                k++;
+            }else{
+
+                if(k > 0){
+                    nums[i-k] = nums[i];
+                    nums[i] = 0;
+                }
+            }
+        }
+    }
+}
+
+/*法三：不交换！只是“挪动”！！i找后面非0的数字；j记录该挪动到哪个位置上
+（第一个0及之后的位置全都要由后面的非0数字按顺序挪动）
+
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums)
+    {
+       int i,j=0;
+       for(i=0;i<nums.size();i++)
+       {         
+           if(nums[i]!=0)
+           {
+               nums[j]=nums[i];
+               j++;
+           }
+       }
+       for(j;j<nums.size();j++)
+       {
+           nums[j]=0;
+       }
+    }
+};
+

@@ -1,0 +1,94 @@
+class MyLinkedList {
+public:
+  //定义链表结点结构体
+  struct Linknode
+  {
+       int val;
+        Linknode *next;
+        Linknode(int m_val):val(m_val),next(nullptr){};
+  };
+//初始化链表
+   Linknode*dummyhead=new Linknode(0);
+   int size;
+    MyLinkedList() {
+       // Linknode*dummyhead=new Linknode(0);
+        //每个链表结构都要有一个虚拟头结点，（在头结点之前），所以设在初始化里
+        //因为初始化时就有这个虚拟头结点，所以后面进来的值就直接跟在后面，不用再说明
+    size=0;//链表长度为0
+    }
+    //index是从0开始的
+    int get(int index) {
+        Linknode*cur=dummyhead->next;
+        if(index<0||index>size-1) return -1; 
+        while(index--)
+        {
+            cur=cur->next;
+        }
+       return cur->val;
+    }
+    void addAtHead(int val) {
+        Linknode*newnode=new Linknode(val);
+        newnode->next=dummyhead->next;
+        dummyhead->next=newnode;
+        size++;
+    }
+    
+    void addAtTail(int val) {
+        Linknode*tailnode=new Linknode(val);
+        //Linknode*cur=dummyhead->next;
+        //有可能虚拟结点之后没有加入结点，那么用->next就会出错
+        Linknode*cur=dummyhead;
+        while(cur->next!=NULL)
+        {
+            cur=cur->next;//找到最后一个结点
+        }
+        cur->next=tailnode;
+        size++;
+    }
+    
+    void addAtIndex(int index, int val) {
+        if(index>size) return;
+        else if(index<0){
+            addAtHead(val);
+            size++;
+        }
+        else{
+            Linknode*cur=dummyhead;
+            while(index--)
+            {
+                //直接index--，index=0时
+                cur=cur->next;
+            }
+                Linknode *p= new Linknode(val);
+                p->next=cur->next;
+                cur->next=p;//插入新节点
+                size++;
+        }
+    }
+    
+    void deleteAtIndex(int index) {
+        if(index>=0&&index<=size-1)
+        {
+            Linknode*cur=dummyhead;
+            while(index--)
+            {
+                cur=cur->next;
+            }
+            Linknode*q=cur->next;
+            cur->next=q->next;
+            delete q;//释放内存
+            size--;
+        }
+
+    }
+};
+
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * MyLinkedList* obj = new MyLinkedList();
+ * int param_1 = obj->get(index);
+ * obj->addAtHead(val);
+ * obj->addAtTail(val);
+ * obj->addAtIndex(index,val);
+ * obj->deleteAtIndex(index);
+ */
